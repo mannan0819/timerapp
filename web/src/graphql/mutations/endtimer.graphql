@@ -1,0 +1,9 @@
+mutation Endtimer($id: Int!) {
+  endTimer(id: $id) {
+    id
+    title
+    text
+    starttime
+    complete
+  }
+}

@@ -1,0 +1,13 @@
+query Reads($limit: Int!, $cursor: String) {
+  Reads(limit: $limit, cursor: $cursor) {
+    hasMore
+    reads {
+      id
+      title
+      textSnippet
+      createdAt
+      updatedAt
+      creatorId
+    }
+  }
+}

@@ -1,0 +1,10 @@
+mutation CreateRead($input: ReadInput!) {
+  createRead(input: $input) {
+    id
+    title
+    text
+    creatorId
+    createdAt
+    updatedAt
+  }
+}

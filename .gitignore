@@ -1,0 +1,5 @@
+/Server/node_modules
+/Server/dist
+/Server/.vscode
+/Web/.next/
+/Web/node_modules

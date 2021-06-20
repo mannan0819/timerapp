@@ -1,0 +1,16 @@
+mutation Timer($id: Int!) {
+  Timer(id: $id) {
+    id
+    title
+    text
+    starttime
+    complete
+    endtime
+    clocktimer
+    project {
+      id
+      title
+      colorhex
+    }
+  }
+}

@@ -1,0 +1,15 @@
+mutation CreateTimer($timerinput: TimerInput!) {
+  createTimer(timerinput: $timerinput) {
+    error {
+      field
+      message
+    }
+    timer {
+      id
+      title
+      text
+      starttime
+      complete
+    }
+  }
+}

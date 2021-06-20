@@ -1,0 +1,16 @@
+query Timers {
+  Timers {
+    id
+    title
+    text
+    starttime
+    endtime
+    complete
+    clocktimer
+    project {
+      id
+      title
+      colorhex
+    }
+  }
+}

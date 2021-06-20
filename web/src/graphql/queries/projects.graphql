@@ -1,0 +1,10 @@
+query Projects {
+  Projects {
+    id
+    title
+    text
+    colorhex
+    createdAt
+    updatedAt
+  }
+}
