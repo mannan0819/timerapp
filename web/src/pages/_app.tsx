@@ -12,13 +12,14 @@ function MyApp({ Component, pageProps }) {
   return (
     <ApolloProvider client={client}>
       <ChakraProvider resetCSS theme={theme}>
-        {/* <ColorModeProvider
+        <ColorModeProvider
           options={{
-            useSystemColorMode: true,
+            useSystemColorMode: false,
+            initialColorMode: "light",
           }}
-        > */}
-        <Component {...pageProps} />
-        {/* </ColorModeProvider> */}
+        >
+          <Component {...pageProps} />
+        </ColorModeProvider>
       </ChakraProvider>
     </ApolloProvider>
   );

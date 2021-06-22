@@ -1,11 +1,18 @@
 import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
 import { Box, Flex, Text } from "@chakra-ui/layout";
-import { Select } from "@chakra-ui/react";
+import { Select, useColorMode } from "@chakra-ui/react";
 import { resetClient } from "next-urql/dist/types/init-urql-client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Clock from "react-clock";
-import { ArrowDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+} from "@chakra-ui/react";
 import {
   Timer,
   useCreateTimerMutation,
@@ -15,18 +22,16 @@ import {
   useTimersQuery,
 } from "../generated/graphql";
 import { convertErrors } from "../utils/converErrors";
+import NextLink from "next/link";
 
 interface TimerProps {
   refetch: any;
-
   timer: Timer;
 }
 
 export const TimerRender: React.FC<TimerProps> = ({ refetch, timer }) => {
-  const [value, setValue] = useState(0);
   const [startTime, setStartTime] = useState(null);
   const [diff, setDiff] = useState(0);
-  const [pause, setPause] = useState(true);
   const [start, setStart] = useState(false);
   const [createTimer] = useCreateTimerMutation();
   const [title, setTitle] = useState("");
@@ -34,8 +39,9 @@ export const TimerRender: React.FC<TimerProps> = ({ refetch, timer }) => {
   const [endTimer] = useEndtimerMutation();
   const [errors, setErrors] = useState(null);
   const { data: projectsData } = useProjectsQuery();
-  const [projects, setProjects] = useState(null);
+  const [project, setProject] = useState("Select Your Project Type");
   const [projId, setProjID] = useState(0);
+  const { colorMode, toggleColorMode } = useColorMode();
 
   useEffect(() => {
     console.log("PROJECT ID: ", projId);
@@ -51,6 +57,7 @@ export const TimerRender: React.FC<TimerProps> = ({ refetch, timer }) => {
       setStartTime(new Date(timer.starttime));
       setStart(true);
       setId(timer.id);
+      setProject(timer.project.title);
       // console.log(timer.id);
     }
   }, [timer]);
@@ -88,24 +95,35 @@ export const TimerRender: React.FC<TimerProps> = ({ refetch, timer }) => {
           {errors.title}
         </Text>
       ) : null}
-      <Select
-        colorScheme="whiteAlpha"
-        // color="aqua"
-        placeholder="Project Name"
-        onChange={(e) => {
-          setProjID(e.target.value as any);
-        }}
-      >
-        {projectsData &&
-          projectsData.Projects.map((proj) => {
-            return (
-              <option key={proj.id} value={proj.id}>
-                {proj.title}
-              </option>
-            );
-          })}
-        <option>asdfj</option>
-      </Select>
+      <Box>
+        <Menu>
+          <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+            {project}
+          </MenuButton>
+          <MenuList>
+            {projectsData &&
+              projectsData.Projects.map((proj) => {
+                return (
+                  <MenuItem
+                    key={proj.id}
+                    value={proj.id}
+                    onClick={() => {
+                      setProjID(proj.id);
+                      setProject(proj.title);
+                    }}
+                    fontSize="20px"
+                  >
+                    {proj.title}
+                  </MenuItem>
+                );
+              })}
+            <MenuDivider />
+            <MenuItem fontSize="20px">
+              <NextLink href="/create-project">Create New Project</NextLink>
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      </Box>
       Timer: {Math.floor(diff / (1000 * 60 * 60))}:
       {Math.floor((diff / (1000 * 60)) % 60)}: {Math.floor(diff / 1000) % 60}
       {!start && (
@@ -160,9 +178,6 @@ export const TimerRender: React.FC<TimerProps> = ({ refetch, timer }) => {
           Stop
         </Button>
       )}
-      {/* Current time: {value.getHours()}:{value.getMinutes()}: */}
-      {/* {value.getSeconds()} */}
-      {/* <Clock value={value} /> */}
     </Box>
   );
 };

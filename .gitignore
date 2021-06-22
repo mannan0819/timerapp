@@ -3,3 +3,5 @@
 /Server/.vscode
 /Web/.next/
 /Web/node_modules
+/web/.next
+/dummydata.sql

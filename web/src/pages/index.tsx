@@ -37,23 +37,25 @@ const Index = () => {
         </Box>
       </Heading>
       <Stack spacing={8}>
-        {data?.Timers.map((timer) => (
-          <Box key={timer.id} p={5} shadow="md" borderWidth="1px">
-            <Heading fontSize="lg">{timer.title}</Heading>
-            <Heading fontSize="md">{timer.project.title}</Heading>
-            <Flex align="left">
-              <Text flex={1} mt={4}>
-                {timer.complete
-                  ? "Timer: " + timer.clocktimer + " seconds"
-                  : "NC: " + timer.starttime}
-              </Text>
-              <Box ml="auto">
-                <EditDeletePostButtons id={timer.id} refetch={refetch} />
-                <button onClick={() => refetch()}>Refetch!</button>
-              </Box>
-            </Flex>
-          </Box>
-        ))}
+        {data?.Timers.map((timer) =>
+          timer.complete ? (
+            <Box key={timer.id} p={5} shadow="md" borderWidth="1px">
+              <Heading fontSize="lg">{timer.title}</Heading>
+              <Heading fontSize="md">{timer.project.title}</Heading>
+              <Flex align="left">
+                <Text flex={1} mt={4}>
+                  {timer.complete
+                    ? "Timer: " + timer.clocktimer + " seconds"
+                    : "NC: " + timer.starttime}
+                </Text>
+                <Box ml="auto">
+                  <EditDeletePostButtons id={timer.id} refetch={refetch} />
+                  <button onClick={() => refetch()}>Refetch!</button>
+                </Box>
+              </Flex>
+            </Box>
+          ) : null
+        )}
       </Stack>
       {/* {data ? (
         <>
