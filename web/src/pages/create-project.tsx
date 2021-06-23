@@ -4,18 +4,21 @@ import { Box } from "@chakra-ui/layout";
 import { Form, Formik } from "formik";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { InputField } from "../components/InputField";
 import { Layout } from "../components/Layout";
 import { useCreateProjectMutation } from "../generated/graphql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { useIsAuth } from "../utils/isAuth";
+import { ColorPicker } from "../components/ColorPicker";
+import { defaultProjectColor } from "../constants";
 
 interface ProjectProps {}
 
 const CreateProject: React.FC<ProjectProps> = ({}) => {
   const router = useRouter();
   const [createRead] = useCreateProjectMutation();
+  const [colorState, setColorState] = useState(defaultProjectColor);
   // useIsAuth();
   return (
     <Layout variant="small">
@@ -27,7 +30,7 @@ const CreateProject: React.FC<ProjectProps> = ({}) => {
               input: {
                 title: values.title,
                 text: values.text,
-                colorhex: values.colorhex,
+                colorhex: colorState,
               },
             },
           });
@@ -50,7 +53,9 @@ const CreateProject: React.FC<ProjectProps> = ({}) => {
                   label="Description"
                 />
               </Box>
-              <InputField name="colorhex" type="text" label="Color" />
+              <Box mt={4}>
+                <ColorPicker label="Color" setColorState={setColorState} />
+              </Box>
             </FormControl>
 
             <Button

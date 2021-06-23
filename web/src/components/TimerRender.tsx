@@ -44,6 +44,7 @@ export const TimerRender: React.FC<TimerProps> = ({ refetch, timer }) => {
   const [projId, setProjID] = useState(0);
   const { colorMode, toggleColorMode } = useColorMode();
   const [changeProject] = useChangeProjectMutation();
+  const [color, setColor] = useState("");
 
   useEffect(() => {
     console.log("PROJECT ID: ", projId);
@@ -87,59 +88,77 @@ export const TimerRender: React.FC<TimerProps> = ({ refetch, timer }) => {
 
   return (
     <Box>
-      <Input
-        placeholder="What are you woking on...."
-        size="md"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      {errors ? (
-        <Text fontSize="20px" color="tomato">
-          {errors.title}
-        </Text>
-      ) : null}
-      <Box>
-        <Menu>
-          <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-            {project}
-          </MenuButton>
-          <MenuList>
-            {projectsData &&
-              projectsData.Projects.map((proj) => {
-                return (
-                  <MenuItem
-                    fontSize="20px"
-                    key={proj.id}
-                    value={proj.id}
-                    onClick={() => {
-                      if(timer){
-                        changeProject({variables:{id:timer.id, projectid: proj.id}})
-                      }
-                      else if(start){
-                        changeProject({variables:{id:id, projectid: proj.id}})
-                      }
-                      setProjID(proj.id);
-                      setProject(proj.title);
-                    }}
-                    
-                  >
-                    <Icon viewBox="0 0 250 185" color={proj.colorhex}>
-  <path
-    fill="currentColor"
-    d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
-  />
-</Icon>
-                    {proj.title}
-                  </MenuItem>
-                );
-              })}
-            <MenuDivider />
-            <MenuItem fontSize="20px">
-              <NextLink href="/create-project">Create New Project</NextLink>
-            </MenuItem>
-          </MenuList>
-        </Menu>
-      </Box>
+      <Flex align="center">
+        <Flex w="500px" mt="6px">
+          <Input
+            placeholder="What are you woking on...."
+            size="md"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          {errors ? (
+            <Text fontSize="20px" color="tomato">
+              {errors.title}
+            </Text>
+          ) : null}
+        </Flex>
+        <Box ml="8px" align="center">
+          <Menu>
+            <MenuButton
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+              colorScheme="blue"
+              variant="outline"
+            >
+              <Icon viewBox="0 0 200 200" color={color}>
+                <path
+                  fill="currentColor"
+                  d="M 75, 75 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
+                />
+              </Icon>
+              {project}
+            </MenuButton>
+            <MenuList>
+              {projectsData &&
+                projectsData.Projects.map((proj) => {
+                  return (
+                    <MenuItem
+                      fontSize="20px"
+                      key={proj.id}
+                      value={proj.id}
+                      onClick={() => {
+                        if (timer) {
+                          changeProject({
+                            variables: { id: timer.id, projectid: proj.id },
+                          });
+                        } else if (start) {
+                          changeProject({
+                            variables: { id: id, projectid: proj.id },
+                          });
+                        }
+                        setProjID(proj.id);
+                        setProject(proj.title);
+                        setColor(proj.colorhex);
+                      }}
+                    >
+                      <Icon viewBox="0 0 250 185" color={proj.colorhex}>
+                        <path
+                          fill="currentColor"
+                          d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
+                        />
+                      </Icon>
+                      {proj.title}
+                    </MenuItem>
+                  );
+                })}
+              <MenuDivider />
+              <MenuItem fontSize="20px">
+                <NextLink href="/create-project">Create New Project</NextLink>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </Box>
+      </Flex>
       Timer: {Math.floor(diff / (1000 * 60 * 60))}:
       {Math.floor((diff / (1000 * 60)) % 60)}: {Math.floor(diff / 1000) % 60}
       {!start && (
