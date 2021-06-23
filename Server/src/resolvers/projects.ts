@@ -61,7 +61,8 @@ export class ProjectsResolver {
   async updateProjects(
     @Arg("id", () => Int) id: number,
     @Arg("title", () => String, { nullable: true }) title: string,
-    @Arg("text", () => String, { nullable: true }) text: string
+    @Arg("text", () => String, { nullable: true }) text: string,
+    @Arg("colorhex", () => String, { nullable: true }) colorhex: string
   ): Promise<Projects | null> {
     let project = await Projects.findOne(id);
     if (!project) return null;
@@ -69,12 +70,16 @@ export class ProjectsResolver {
       await Projects.update({ id }, { title, text });
       project.title = title;
       project.text = text;
+      project.colorhex = colorhex;
     } else if (typeof title !== "undefined") {
       await Projects.update({ id }, { title });
       project.title = title;
     } else if (typeof text !== "undefined") {
       await Projects.update({ id }, { text });
       project.text = text;
+    } else if(typeof colorhex !== "undefined") {
+      await Projects.update({ id }, { colorhex });
+      project.colorhex = colorhex;
     }
     return project;
   }

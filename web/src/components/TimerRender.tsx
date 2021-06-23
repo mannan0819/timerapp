@@ -123,6 +123,13 @@ export const TimerRender: React.FC<TimerProps> = ({ refetch, timer }) => {
                     }}
                     
                   >
+                    <Image
+        boxSize="2rem"
+        borderRadius="full"
+        src="https://placekitten.com/100/100"
+        alt="Fluffybuns the destroyer"
+        mr="12px"
+      />
                     {proj.title}
                   </MenuItem>
                 );
