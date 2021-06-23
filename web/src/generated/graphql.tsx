@@ -35,6 +35,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   Timer?: Maybe<Timer>;
   createTimer: TimerResponse;
+  changeProject: Scalars['Boolean'];
   endTimer: Timer;
   deleteTimer: Scalars['Boolean'];
   createProject: Projects;
@@ -90,6 +91,12 @@ export type MutationTimerArgs = {
 
 export type MutationCreateTimerArgs = {
   timerinput: TimerInput;
+};
+
+
+export type MutationChangeProjectArgs = {
+  projectid: Scalars['Int'];
+  id: Scalars['Int'];
 };
 
 
@@ -267,6 +274,17 @@ export type ChangePasswordMutation = (
       & Pick<User, 'id' | 'username'>
     )> }
   ) }
+);
+
+export type ChangeProjectMutationVariables = Exact<{
+  id: Scalars['Int'];
+  projectid: Scalars['Int'];
+}>;
+
+
+export type ChangeProjectMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'changeProject'>
 );
 
 export type CreateProjectMutationVariables = Exact<{
@@ -515,6 +533,38 @@ export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
 export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
 export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
+export const ChangeProjectDocument = gql`
+    mutation changeProject($id: Int!, $projectid: Int!) {
+  changeProject(id: $id, projectid: $projectid)
+}
+    `;
+export type ChangeProjectMutationFn = Apollo.MutationFunction<ChangeProjectMutation, ChangeProjectMutationVariables>;
+
+/**
+ * __useChangeProjectMutation__
+ *
+ * To run a mutation, you first call `useChangeProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeProjectMutation, { data, loading, error }] = useChangeProjectMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      projectid: // value for 'projectid'
+ *   },
+ * });
+ */
+export function useChangeProjectMutation(baseOptions?: Apollo.MutationHookOptions<ChangeProjectMutation, ChangeProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangeProjectMutation, ChangeProjectMutationVariables>(ChangeProjectDocument, options);
+      }
+export type ChangeProjectMutationHookResult = ReturnType<typeof useChangeProjectMutation>;
+export type ChangeProjectMutationResult = Apollo.MutationResult<ChangeProjectMutation>;
+export type ChangeProjectMutationOptions = Apollo.BaseMutationOptions<ChangeProjectMutation, ChangeProjectMutationVariables>;
 export const CreateProjectDocument = gql`
     mutation CreateProject($input: ProjectInput!) {
   createProject(input: $input) {

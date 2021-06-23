@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import {
   Timer,
+  useChangeProjectMutation,
   useCreateTimerMutation,
   useEndtimerMutation,
   useProjectsQuery,
@@ -42,6 +43,7 @@ export const TimerRender: React.FC<TimerProps> = ({ refetch, timer }) => {
   const [project, setProject] = useState("Select Your Project Type");
   const [projId, setProjID] = useState(0);
   const { colorMode, toggleColorMode } = useColorMode();
+  const [changeProject] = useChangeProjectMutation();
 
   useEffect(() => {
     console.log("PROJECT ID: ", projId);
@@ -51,6 +53,7 @@ export const TimerRender: React.FC<TimerProps> = ({ refetch, timer }) => {
   //   console.log("HOURS: " + value.getHours());
   //   console.log("Minutes: " + value.getMinutes());
   //   console.log("second: " + value.getSeconds());
+
   useEffect(() => {
     if (timer) {
       setTitle(timer.title);
@@ -105,13 +108,20 @@ export const TimerRender: React.FC<TimerProps> = ({ refetch, timer }) => {
               projectsData.Projects.map((proj) => {
                 return (
                   <MenuItem
+                    fontSize="20px"
                     key={proj.id}
                     value={proj.id}
                     onClick={() => {
+                      if(timer){
+                        changeProject({variables:{id:timer.id, projectid: proj.id}})
+                      }
+                      else if(start){
+                        changeProject({variables:{id:id, projectid: proj.id}})
+                      }
                       setProjID(proj.id);
                       setProject(proj.title);
                     }}
-                    fontSize="20px"
+                    
                   >
                     {proj.title}
                   </MenuItem>

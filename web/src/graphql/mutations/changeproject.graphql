@@ -1,0 +1,3 @@
+mutation changeProject($id: Int!, $projectid: Int!){
+  changeProject(id:$id,projectid:$projectid)
+}

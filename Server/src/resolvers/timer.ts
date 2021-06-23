@@ -83,6 +83,33 @@ export class TimerResolver {
     }
   }
 
+  @Mutation(() => Boolean)
+  async changeProject(
+    @Arg("id", () => Int) id: number,
+    @Arg("projectid", () => Int) projectid: number
+  ) {
+    try {
+      const project = await Projects.findOne(projectid);
+      const timer = await Timer.findOne(id);
+      if (!project)
+        return {
+          error: [{ field: "project", message: "Project doesnt exist" }],
+        };
+      if (!timer)
+        return {
+          error: [{ field: "timer", message: "Timer doesnt exist" }],
+        };
+      timer.projectId = projectid;
+      timer.project = project;
+      await getConnection().manager.save(timer);
+      console.log("TIMERID: ", timer.id);
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  }
+
   @Mutation(() => Timer)
   async endTimer(@Arg("id", () => Int) id: number) {
     let timer = await Timer.findOne(id);
