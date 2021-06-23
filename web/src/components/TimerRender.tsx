@@ -1,11 +1,11 @@
 import { Button } from "@chakra-ui/button";
 import { Input } from "@chakra-ui/input";
 import { Box, Flex, Text } from "@chakra-ui/layout";
-import { Select, useColorMode } from "@chakra-ui/react";
+import { Select, useColorMode, Image } from "@chakra-ui/react";
 import { resetClient } from "next-urql/dist/types/init-urql-client";
 import React, { useEffect, useState } from "react";
 import Clock from "react-clock";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, Icon } from "@chakra-ui/icons";
 import {
   Menu,
   MenuButton,
@@ -123,13 +123,12 @@ export const TimerRender: React.FC<TimerProps> = ({ refetch, timer }) => {
                     }}
                     
                   >
-                    <Image
-        boxSize="2rem"
-        borderRadius="full"
-        src="https://placekitten.com/100/100"
-        alt="Fluffybuns the destroyer"
-        mr="12px"
-      />
+                    <Icon viewBox="0 0 250 185" color={proj.colorhex}>
+  <path
+    fill="currentColor"
+    d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
+  />
+</Icon>
                     {proj.title}
                   </MenuItem>
                 );
