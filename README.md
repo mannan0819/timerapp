@@ -1,4 +1,4 @@
-# timerapp
+# Timerapp
 Timer App
   - Keep track of activity by grouping them into catagories.
   - Create new catagories based on the type of activity or used one of the defaults.
